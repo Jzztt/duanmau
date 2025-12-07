@@ -1,20 +1,9 @@
 <?php
-// Hiển thị lỗi
-if (isset($_SESSION['errors'])) {
-    echo '<div class="col-12"><div class="alert alert-danger alert-dismissible fade show" role="alert">';
-    echo '<strong>Có lỗi xảy ra:</strong><ul class="mb-0">';
-    foreach ($_SESSION['errors'] as $error) {
-        echo '<li>' . $error . '</li>';
-    }
-    echo '</ul>';
-    echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-    echo '</div></div>';
-    unset($_SESSION['errors']);
-}
-
 // Lấy dữ liệu cũ nếu có
 $old = $_SESSION['old'] ?? [];
+$errors = $_SESSION['errors'] ?? [];
 unset($_SESSION['old']);
+unset($_SESSION['errors']);
 ?>
 
 <div class="col-12">
@@ -29,26 +18,34 @@ unset($_SESSION['old']);
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="name" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="name" 
-                                   name="name" 
-                                   value="<?= htmlspecialchars($old['name'] ?? '') ?>"
-                                   required>
+                            <input type="text"
+                                class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>"
+                                id="name"
+                                name="name"
+                                value="<?= htmlspecialchars($old['name'] ?? '') ?>">
+                            <?php if (isset($errors['name'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= htmlspecialchars($errors['name']) ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="price" class="form-label">Giá <span class="text-danger">*</span></label>
-                            <input type="number" 
-                                   class="form-control" 
-                                   id="price" 
-                                   name="price" 
-                                   value="<?= htmlspecialchars($old['price'] ?? '') ?>"
-                                   min="0"
-                                   step="0.01"
-                                   required>
+                            <input type="number"
+                                class="form-control <?= isset($errors['price']) ? 'is-invalid' : '' ?>"
+                                id="price"
+                                name="price"
+                                value="<?= htmlspecialchars($old['price'] ?? '') ?>"
+                                min="0"
+                                step="0.01">
+                            <?php if (isset($errors['price'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= htmlspecialchars($errors['price']) ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -57,37 +54,54 @@ unset($_SESSION['old']);
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="category_id" class="form-label">Thể loại <span class="text-danger">*</span></label>
-                            <select class="form-select" id="category_id" name="category_id" required>
+                            <select class="form-select <?= isset($errors['category_id']) ? 'is-invalid' : '' ?>"
+                                id="category_id"
+                                name="category_id">
                                 <option value="">-- Chọn thể loại --</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= $category['id'] ?>"
-                                            <?= (isset($old['category_id']) && $old['category_id'] == $category['id']) ? 'selected' : '' ?>>
+                                        <?= (isset($old['category_id']) && $old['category_id'] == $category['id']) ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($category['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                            <?php if (isset($errors['category_id'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= htmlspecialchars($errors['category_id']) ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="image" class="form-label">Hình ảnh</label>
-                            <input type="file" 
-                                   class="form-control" 
-                                   id="image" 
-                                   name="image"
-                                   accept="image/*">
+                            <input type="file"
+                                class="form-control <?= isset($errors['image']) ? 'is-invalid' : '' ?>"
+                                id="image"
+                                name="image"
+                                accept="image/*">
                             <small class="text-muted">Chấp nhận: JPG, PNG, GIF</small>
+                            <?php if (isset($errors['image'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= htmlspecialchars($errors['image']) ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Mô tả</label>
-                    <textarea class="form-control" 
-                              id="description" 
-                              name="description" 
-                              rows="4"><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
+                    <textarea class="form-control <?= isset($errors['description']) ? 'is-invalid' : '' ?>"
+                        id="description"
+                        name="description"
+                        rows="4"><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
+                    <?php if (isset($errors['description'])): ?>
+                        <div class="invalid-feedback d-block">
+                            <?= htmlspecialchars($errors['description']) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="d-flex gap-2">
@@ -102,4 +116,3 @@ unset($_SESSION['old']);
         </div>
     </div>
 </div>
-

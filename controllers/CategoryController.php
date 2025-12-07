@@ -15,12 +15,12 @@ class CategoryController
         $title = 'Quản lý thể loại';
         $view = 'categories/index';
         $categories = $this->categoryModel->all();
-        
+
         // Thêm số lượng sản phẩm cho mỗi thể loại
         foreach ($categories as &$category) {
             $category['product_count'] = $this->categoryModel->countProducts($category['id']);
         }
-        
+
         require_once PATH_VIEW_MAIN;
     }
 
@@ -44,7 +44,7 @@ class CategoryController
             // Validate
             $errors = [];
             if (empty($data['name'])) {
-                $errors[] = 'Tên thể loại không được để trống';
+                $errors['name'] = 'Tên thể loại không được để trống';
             }
 
             if (empty($errors)) {
@@ -102,7 +102,7 @@ class CategoryController
             // Validate
             $errors = [];
             if (empty($data['name'])) {
-                $errors[] = 'Tên thể loại không được để trống';
+                $errors['name'] = 'Tên thể loại không được để trống';
             }
 
             if (empty($errors)) {
@@ -143,4 +143,3 @@ class CategoryController
         exit;
     }
 }
-

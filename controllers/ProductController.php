@@ -43,13 +43,13 @@ class ProductController
             // Validate
             $errors = [];
             if (empty($data['name'])) {
-                $errors[] = 'Tên sản phẩm không được để trống';
+                $errors['name'] = 'Tên sản phẩm không được để trống';
             }
             if (empty($data['price']) || $data['price'] <= 0) {
-                $errors[] = 'Giá sản phẩm phải lớn hơn 0';
+                $errors['price'] = 'Giá sản phẩm phải lớn hơn 0';
             }
             if (empty($data['category_id'])) {
-                $errors[] = 'Vui lòng chọn thể loại';
+                $errors['category_id'] = 'Vui lòng chọn thể loại';
             }
 
             // Xử lý upload ảnh
@@ -57,7 +57,7 @@ class ProductController
                 try {
                     $data['image'] = upload_file('products', $_FILES['image']);
                 } catch (Exception $e) {
-                    $errors[] = $e->getMessage();
+                    $errors['image'] = $e->getMessage();
                 }
             }
 
@@ -119,13 +119,13 @@ class ProductController
             // Validate
             $errors = [];
             if (empty($data['name'])) {
-                $errors[] = 'Tên sản phẩm không được để trống';
+                $errors['name'] = 'Tên sản phẩm không được để trống';
             }
             if (empty($data['price']) || $data['price'] <= 0) {
-                $errors[] = 'Giá sản phẩm phải lớn hơn 0';
+                $errors['price'] = 'Giá sản phẩm phải lớn hơn 0';
             }
             if (empty($data['category_id'])) {
-                $errors[] = 'Vui lòng chọn thể loại';
+                $errors['category_id'] = 'Vui lòng chọn thể loại';
             }
 
             // Xử lý upload ảnh mới
@@ -139,10 +139,10 @@ class ProductController
                             unlink($oldImagePath);
                         }
                     }
-                    
+
                     $data['image'] = upload_file('products', $_FILES['image']);
                 } catch (Exception $e) {
-                    $errors[] = $e->getMessage();
+                    $errors['image'] = $e->getMessage();
                 }
             }
 
@@ -176,4 +176,3 @@ class ProductController
         exit;
     }
 }
-
